@@ -57,3 +57,36 @@ unsafe impl<T> Unwrappable<T> for Option<T> {
         }
     }
 }
+
+#[macro_export]
+macro_rules! consts {
+    ($($(#[$attr:meta])* $ident:ident : $ty:ty = $expr:expr;)*) => {
+        $(
+            $(#[$attr])*
+            const $ident: $ty = $expr;
+        )*
+    };
+    ($($(#[$attr:meta])* $vis:vis $ident:ident : $ty:ty = $expr:expr;)*) => {
+        $(
+            $(#[$attr])*
+            $vis const $ident: $ty = $expr;
+        )*
+    };
+}
+
+#[macro_export]
+macro_rules! typedef {
+    ($($(#[$attr:meta])* $ident:ident = $ty:ty;)*) => {
+        $($(#[$attr])* type $ident = $ty;)*
+    };
+    ($($(#[$attr:meta])* $vis:vis $ident:ident = $ty:ty;)*) => {
+        $($(#[$attr])* $vis type $ident = $ty;)*
+    };
+}
+
+#[macro_export]
+macro_rules! cfg_test {
+    ($($item:item)*) => {
+        $(#[cfg(test)] $item)*
+    };
+}
